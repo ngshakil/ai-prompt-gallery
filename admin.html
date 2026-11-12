@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin — Promptly</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#090d19;color:#f5f6fc;font:14px system-ui,Arial}header{padding:18px max(20px,calc((100% - 1050px)/2));border-bottom:1px solid #252d43;display:flex;justify-content:space-between}a{color:#a99cff;text-decoration:none}.wrap{max-width:1050px;margin:35px auto;padding:0 20px}h1{font-size:26px}.muted{color:#9ba5bd}.panel{background:#121a2d;border:1px solid #29334c;border-radius:15px;padding:22px;margin:20px 0}input,textarea,select{width:100%;background:#090f20;border:1px solid #303a56;color:#fff;border-radius:9px;padding:12px;font:inherit;margin:6px 0 14px}textarea{min-height:110px;resize:vertical}label{font-size:12px;color:#bdc5d8;font-weight:700}button{background:#8878ff;border:0;color:#080b16;font-weight:800;padding:11px 16px;border-radius:9px;cursor:pointer}button.secondary{background:#27324d;color:#e6e8f5}button.danger{background:#542b3b;color:#ffdce4}.hidden{display:none!important}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.item{display:flex;gap:13px;align-items:center;padding:12px 0;border-top:1px solid #283149}.item img{width:65px;height:65px;object-fit:cover;border-radius:9px}.item .info{flex:1;min-width:0}.item strong{display:block}.actions{display:flex;gap:7px;flex-wrap:wrap}.notice{padding:10px;border-radius:8px;background:#1c2940;color:#cbd6ef;margin:12px 0}@media(max-width:600px){.row{grid-template-columns:1fr}.item{align-items:flex-start}.actions{flex-direction:column}}
+</style></head><body><header><strong>✦ PROMPTLY / ADMIN</strong><a href="/">View website ↗</a></header>
+<div class="wrap"><h1>Content dashboard</h1><p class="muted">Add, edit and remove gallery prompts. Changes are saved to your Cloudflare D1 database.</p>
+<section id="loginBox" class="panel"><h2>Admin login</h2><label>Admin password</label><input id="password" type="password" placeholder="Enter admin password"><button id="login">Sign in</button><div id="loginMsg" class="notice hidden"></div></section>
+<section id="dashboard" class="hidden">
+<div class="panel"><h2 id="formTitle">Add a new prompt</h2><form id="promptForm"><input type="hidden" id="editId">
+<label>Prompt title</label><input id="title" required maxlength="120" placeholder="e.g. Dreamy Floral Portrait">
+<div class="row"><div><label>Category</label><input id="category" required placeholder="Portrait, Fashion, Nature…"></div><div><label>Image URL</label><input id="image" type="url" required placeholder="https://…"></div></div>
+<label>Short description</label><input id="description" maxlength="220" placeholder="A short explanation of this style">
+<label>AI prompt</label><textarea id="prompt" required placeholder="Write the full AI image prompt here…"></textarea>
+<button type="submit" id="saveBtn">Save prompt</button> <button type="button" class="secondary" id="reset">Clear form</button>
+<div id="formMsg" class="notice hidden"></div></form></div>
+<div class="panel"><h2>Adsterra settings</h2><p class="muted">Edit ad codes or disable placements.</p>
+<div><label><input type="checkbox" id="enable-banner" checked style="width:auto"> Banner — top</label><textarea id="code-banner" placeholder="Banner code"></textarea></div>
+<div><label><input type="checkbox" id="enable-native" checked style="width:auto"> Native banner — bottom</label><textarea id="code-native" placeholder="Native code"></textarea></div>
+<div><label><input type="checkbox" id="enable-social" checked style="width:auto"> Social Bar — site-wide</label><textarea id="code-social" placeholder="Social Bar code"></textarea></div>
+<div><label><input type="checkbox" id="enable-popunder" checked style="width:auto"> Popunder — site-wide</label><textarea id="code-popunder" placeholder="Popunder code"></textarea></div>
+<button id="saveAds">Save ad settings</button><div id="adMsg" class="notice hidden"></div></div><div class="panel"><div style="display:flex;justify-content:space-between;gap:12px;align-items:center"><h2>Your prompts</h2><button class="secondary" id="logout">Log out</button></div><div id="items" class="muted">Loading…</div></div>
+</section></div>
+<script>
+const $=s=>document.querySelector(s);let records=[];
+async function api(url,opts={}){let r=await fetch(url,{...opts,headers:{'Content-Type':'application/json',...(opts.headers||{})}});let d=await r.json().catch(()=>({}));if(!r.ok)throw Error(d.error||'Request failed');return d}
+function msg(el,t){el.textContent=t;el.classList.remove('hidden')}
+async function loadAds(){let a=await api('/api/ads');for(let x of a){$('#code-'+x.slot).value=x.code;$('#enable-'+x.slot).checked=!!x.enabled}}
+async function load(){records=await api('/api/prompts');$('#items').innerHTML=records.length?records.map(p=>`<div class="item"><img src="${p.image_url.replace(/"/g,'&quot;')}" onerror="this.src='https://placehold.co/100'"><div class="info"><strong>${safe(p.title)}</strong><span class="muted">${safe(p.category)}</span></div><div class="actions"><button class="secondary" onclick="edit('${p.id}')">Edit</button><button class="danger" onclick="removePrompt('${p.id}')">Delete</button></div></div>`).join(''):'No prompts yet. Add your first one above.'}
+function safe(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function clearForm(){$('#promptForm').reset();$('#editId').value='';$('#formTitle').textContent='Add a new prompt';$('#saveBtn').textContent='Save prompt'}
+window.edit=id=>{let p=records.find(x=>String(x.id)===String(id));if(!p)return;$('#editId').value=p.id;$('#title').value=p.title;$('#category').value=p.category;$('#image').value=p.image_url;$('#description').value=p.description||'';$('#prompt').value=p.prompt;$('#formTitle').textContent='Edit prompt';$('#saveBtn').textContent='Update prompt';window.scrollTo({top:0,behavior:'smooth'})};
+window.removePrompt=async id=>{if(!confirm('Delete this prompt?'))return;try{await api('/api/prompts/'+id,{method:'DELETE'});await load()}catch(e){alert(e.message)}};
+async function showDashboard(){try{await api('/api/session');$('#loginBox').classList.add('hidden');$('#dashboard').classList.remove('hidden');await load();await loadAds()}catch(e){}}
+$('#login').onclick=async()=>{try{await api('/api/login',{method:'POST',body:JSON.stringify({password:$('#password').value})});$('#loginMsg').classList.add('hidden');await showDashboard()}catch(e){msg($('#loginMsg'),e.message)}};
+$('#password').addEventListener('keydown',e=>{if(e.key==='Enter')$('#login').click()});
+$('#logout').onclick=async()=>{await api('/api/logout',{method:'POST'});$('#dashboard').classList.add('hidden');$('#loginBox').classList.remove('hidden')};
+$('#saveAds').onclick=async()=>{let ads=['banner','native','social','popunder'].map(slot=>({slot,code:$('#code-'+slot).value,enabled:$('#enable-'+slot).checked}));try{await api('/api/ads',{method:'PUT',body:JSON.stringify({ads})});msg($('#adMsg'),'Ad settings saved.')}catch(e){msg($('#adMsg'),e.message)}};
+$('#reset').onclick=clearForm;
+$('#promptForm').onsubmit=async e=>{e.preventDefault();let id=$('#editId').value;let body={title:$('#title').value.trim(),category:$('#category').value.trim(),image_url:$('#image').value.trim(),description:$('#description').value.trim(),prompt:$('#prompt').value.trim()};try{await api(id?'/api/prompts/'+id:'/api/prompts',{method:id?'PUT':'POST',body:JSON.stringify(body)});msg($('#formMsg'),id?'Prompt updated successfully.':'Prompt added successfully.');clearForm();await load()}catch(e){msg($('#formMsg'),e.message)}};
+showDashboard();
+</script></body></html>

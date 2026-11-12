@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Explore creative AI image prompts and copy them in one click.">
+<title>Promptly — AI Prompt Gallery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080b16;--panel:#11172a;--panel2:#171e34;--line:#29314a;--text:#f4f5fb;--muted:#9ba5bd;--accent:#8c7bff;--cyan:#65d9e8}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% -10%,#20234b 0,transparent 38%),var(--bg);color:var(--text);font-family:'DM Sans',sans-serif}
+header{max-width:1220px;margin:auto;padding:26px 24px 18px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:.3px;font-size:21px}.mark{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#8877ff,#5dd8e5);display:grid;place-items:center;color:#08101c;font-size:20px}
+a{color:inherit;text-decoration:none}.admin-link{font-size:13px;color:var(--muted);border:1px solid var(--line);padding:9px 13px;border-radius:99px}
+.hero{max-width:1220px;margin:20px auto 28px;padding:35px 24px 24px;text-align:center}.eyebrow{color:var(--cyan);font-size:11px;letter-spacing:2.5px;font-weight:800;text-transform:uppercase}
+h1{font:700 clamp(36px,6vw,66px)/1.05 'Playfair Display',serif;margin:14px 0 12px;letter-spacing:-1.5px}.hero p{color:var(--muted);max-width:600px;margin:0 auto 25px;font-size:15px;line-height:1.7}
+.search{max-width:680px;margin:auto;display:flex;align-items:center;background:#141a30;border:1px solid #333b59;border-radius:15px;padding:0 17px;box-shadow:0 15px 50px #0003}.search span{font-size:21px;color:#aeb7ce}.search input{width:100%;border:0;outline:0;background:transparent;color:white;padding:17px 13px;font:inherit;font-size:15px}
+.filters{max-width:1220px;margin:0 auto 24px;padding:0 24px;display:flex;gap:9px;overflow:auto;scrollbar-width:none}.chip{white-space:nowrap;border:1px solid var(--line);background:#11172a;color:#aeb7ce;padding:9px 15px;border-radius:99px;font:600 12px 'DM Sans';cursor:pointer}.chip.active,.chip:hover{background:#8070f5;color:white;border-color:#8070f5}
+main{max-width:1220px;margin:auto;padding:0 24px 70px}.section-head{display:flex;justify-content:space-between;align-items:center;margin:0 0 17px}.section-head h2{font-size:17px;margin:0}.count{color:var(--muted);font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}.card{min-width:0}.thumb{width:100%;aspect-ratio:1/1;border-radius:17px;overflow:hidden;background:var(--panel2);position:relative;cursor:pointer;border:1px solid #ffffff0b}.thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s}.card:hover .thumb img{transform:scale(1.045)}.tag{position:absolute;left:12px;top:12px;background:#080b16c9;border:1px solid #ffffff25;padding:6px 9px;border-radius:99px;font-size:10px;color:#e8e8f5;backdrop-filter:blur(10px)}
+.card h3{font-size:14px;line-height:1.4;margin:12px 3px 5px}.card .meta{color:var(--muted);font-size:11px;margin:0 3px}
+.ad-slot{display:flex;justify-content:center;align-items:center;margin:16px auto;max-width:100%;overflow:hidden}.ad-slot:empty{display:none}.empty{padding:50px 15px;text-align:center;color:var(--muted);grid-column:1/-1;background:#11172a;border:1px solid var(--line);border-radius:16px}
+footer{text-align:center;color:#6f7891;border-top:1px solid #ffffff12;padding:25px;font-size:12px}
+.modal{position:fixed;inset:0;background:#03050bdc;z-index:5;display:none;align-items:center;justify-content:center;padding:18px;backdrop-filter:blur(8px)}.modal.show{display:flex}.dialog{width:min(850px,100%);max-height:92vh;overflow:auto;background:#11172a;border:1px solid var(--line);border-radius:20px;display:grid;grid-template-columns:1fr 1fr;position:relative}.dialog img{width:100%;height:100%;min-height:350px;object-fit:cover}.detail{padding:28px}.detail h2{font:700 26px 'Playfair Display';margin:12px 0}.detail p{color:var(--muted);font-size:13px;line-height:1.65}.prompt{background:#090e1d;border:1px solid var(--line);padding:15px;border-radius:12px;font-size:13px;line-height:1.6;white-space:pre-wrap;max-height:210px;overflow:auto}.copy{border:0;background:linear-gradient(100deg,#8b79ff,#5dcfe0);color:#07101c;font-weight:800;padding:12px 17px;border-radius:10px;cursor:pointer;margin-top:12px}.close{position:absolute;right:12px;top:12px;background:#090e1dcc;color:white;border:1px solid #ffffff35;border-radius:50%;width:35px;height:35px;font-size:19px;cursor:pointer;z-index:2}
+@media(max-width:800px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:17px}.dialog{grid-template-columns:1fr}.dialog img{height:260px;min-height:0}.detail{padding:21px}}
+@media(max-width:430px){header{padding:18px 16px}.hero{padding:25px 16px 20px}.filters,main{padding-left:16px;padding-right:16px}.grid{gap:13px}.card h3{font-size:12px}.thumb{border-radius:13px}}
+</style></head>
+<body>
+<header><a class="brand" href="/"><span class="mark">✦</span> PROMPTLY</a><a class="admin-link" href="/admin.html">Admin ↗</a></header>
+<section class="hero"><div class="eyebrow">Your creative prompt library</div><h1>Ideas into <span style="color:#9a8cff">images.</span></h1><p>Discover beautiful AI image prompts, explore creative styles, and copy your next idea in one click.</p>
+<div class="search"><span>⌕</span><input id="search" placeholder="Search prompts, styles or categories…" autocomplete="off"></div></section>
+<nav class="filters" id="filters"><button class="chip active" data-cat="All">All prompts</button></nav>
+<main><div id="ad-top" class="ad-slot"></div><div class="section-head"><h2>Explore prompts</h2><span class="count" id="count">Loading…</span></div><section class="grid" id="grid"><div class="empty">Loading gallery…</div></section><div id="ad-bottom" class="ad-slot"></div></main>
+<footer>© <span id="year"></span> Promptly · Made for creative minds</footer>
+<div class="modal" id="modal"><div class="dialog"><button class="close" id="close">×</button><img id="modalImg" alt=""><div class="detail"><div class="eyebrow" id="modalCat"></div><h2 id="modalTitle"></h2><p id="modalDesc"></p><div class="prompt" id="modalPrompt"></div><button class="copy" id="copy">Copy prompt</button></div></div></div>
+<script>
+const $=s=>document.querySelector(s);let prompts=[],category='All';
+const fallback=[
+{id:'demo1',title:'Dreamy Floral Double Exposure Portrait',category:'Portrait',image_url:'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=900',description:'Soft floral layers, dreamy light and an editorial portrait mood.',prompt:'Dreamy fine-art double exposure portrait of a woman, delicate white flowers layered softly across the face, translucent petals, muted sage green palette, natural skin texture, ethereal cinematic lighting, shallow depth of field, refined editorial photography.'},
+{id:'demo2',title:'Ethereal Motion-Blur Fashion Portrait',category:'Fashion',image_url:'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=900',description:'An expressive fashion portrait with a subtle sense of movement.',prompt:'High-fashion editorial portrait, graceful motion blur, flowing hair, soft directional studio light, elegant styling, rich shadows, film grain, artistic long exposure, premium magazine photography.'},
+{id:'demo3',title:'Golden Hour Cinematic Portrait',category:'Cinematic',image_url:'https://images.unsplash.com/photo-150821風?w=900',description:'Warm golden light and cinematic atmosphere.',prompt:'Cinematic close-up portrait in warm golden-hour light, natural expression, glowing highlights, deep soft shadows, 85mm lens, subtle film grain, premium editorial color grading.'}
+];
+function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function render(){
+ const q=$('#search').value.toLowerCase();let list=prompts.filter(p=>(category==='All'||p.category===category)&&[p.title,p.category,p.description,p.prompt].join(' ').toLowerCase().includes(q));
+ $('#count').textContent=`${list.length} ${list.length===1?'prompt':'prompts'}`;
+ $('#grid').innerHTML=list.length?list.map(p=>`<article class="card"><div class="thumb" data-id="${esc(p.id)}"><img loading="lazy" src="${esc(p.image_url)}" alt="${esc(p.title)}" onerror="this.src='https://placehold.co/700x700/171e34/ffffff?text=Prompt+Image'"><span class="tag">${esc(p.category)}</span></div><h3>${esc(p.title)}</h3><p class="meta">${esc(p.description||'AI image prompt')}</p></article>`).join(''):'<div class="empty">No prompts found. Try another search.</div>';
+ document.querySelectorAll('.thumb').forEach(el=>el.addEventListener('click',()=>openPrompt(el.dataset.id)));
+}
+function categories(){
+ let cats=['All',...new Set(prompts.map(p=>p.category).filter(Boolean))];
+ $('#filters').innerHTML=cats.map(c=>`<button class="chip ${c===category?'active':''}" data-cat="${esc(c)}">${esc(c==='All'?'All prompts':c)}</button>`).join('');
+ document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{category=b.dataset.cat;categories();render()});
+}
+function openPrompt(id){let p=prompts.find(x=>String(x.id)===String(id));if(!p)return;$('#modalImg').src=p.image_url;$('#modalImg').alt=p.title;$('#modalCat').textContent=p.category;$('#modalTitle').textContent=p.title;$('#modalDesc').textContent=p.description||'';$('#modalPrompt').textContent=p.prompt;$('#copy').onclick=async()=>{try{await navigator.clipboard.writeText(p.prompt);$('#copy').textContent='Copied! ✓';setTimeout(()=>$('#copy').textContent='Copy prompt',1500)}catch(e){$('#copy').textContent='Select and copy the text'}};$('#modal').classList.add('show')}
+$('#close').onclick=()=>$('#modal').classList.remove('show');$('#modal').onclick=e=>{if(e.target.id==='modal')$('#modal').classList.remove('show')};$('#search').addEventListener('input',render);$('#year').textContent=new Date().getFullYear();
+function runAd(code,target){if(!code)return;let h=document.createElement('div');h.innerHTML=code;[...h.childNodes].forEach(n=>{if(n.nodeName==='SCRIPT'){let x=document.createElement('script');[...n.attributes].forEach(a=>x.setAttribute(a.name,a.value));x.text=n.textContent;target.appendChild(x)}else target.appendChild(n.cloneNode(true))})}
+(async()=>{try{let r=await fetch('/api/ads');if(!r.ok)return;for(let a of await r.json()){if(!a.enabled||!a.code)continue;if(a.slot==='banner'){let e=document.createElement('div');e.className='ad-slot';$('#ad-top').appendChild(e);runAd(a.code,e)}else if(a.slot==='native'){let e=document.createElement('div');e.className='ad-slot';$('#ad-bottom').appendChild(e);runAd(a.code,e)}else runAd(a.code,document.body)}}catch(e){console.warn('Ads unavailable',e)}})();
+(async()=>{try{let r=await fetch('/api/prompts');if(!r.ok)throw Error();prompts=await r.json();if(!Array.isArray(prompts))throw Error()}catch(e){prompts=fallback}categories();render()})();
+</script></body></html>
